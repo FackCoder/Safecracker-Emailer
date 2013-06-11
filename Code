@@ -1,0 +1,21 @@
+function parse_value($item, $data) {
+  	if (isset($this->settings[$item])) {
+			$item = $this->settings[$item];
+			preg_match_all('/\{([A-Za-z_0-9-]*)\}/', $item, $output); //simple match for a {short_name} field
+			if (count($output[0]) > 0) { //if {short_name} tags are detected, check the data object for either channel (e.g. channel_name) or entry (e.g. custom_field) arrays for matching keys
+				foreach ($output[1] as $values) {
+					if ($values!=""){
+						/*$item = (isset($data->entry["$values"])) ? 
+							str_replace('{'.$values.'}', $data->entry["$values"], $item) : 
+								(isset($data->channel["$values"])) ? 
+									str_replace('{'.$values.'}', $data->channel["$values"], $item) : 
+										$item; //It works. Trust me, I am science
+						*/
+						
+						$item = $data->entry[$values]; //Moron, This is the correct one!!!!
+					}
+				}
+			}
+			return $item;
+		}
+	}
